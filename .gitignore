@@ -1,0 +1,31 @@
+# Environnement et Sécurité (TRÈS IMPORTANT)
+.env
+
+.env.*
+*.pem
+
+# Python et Django
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+env/
+*.sqlite3
+media/
+staticfiles/
+
+# Node.js et React (Frontend)
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Docker
+.docker/
+docker-compose.override.yml
+
+# Fichiers Système (Mac / Windows)
+.DS_Store
+Thumbs.db

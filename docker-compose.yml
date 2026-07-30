@@ -1,0 +1,50 @@
+
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: emc_postgres
+    env_file:
+      - .env
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+    # On ajoute un test de santé pour que Docker sache quand Postgres est réellement prêt
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U emc_user -d emc_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5  
+
+  backend:
+    build: ./backend
+    container_name: emc_backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
+
+  frontend:
+    build: ./frontend
+    container_name: emc_frontend
+    ports:
+      - "9000:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    command: npm run dev -- --host 0.0.0.0
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
