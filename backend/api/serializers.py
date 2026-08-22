@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Region, Ville, Signalement
+from .models import Region, Ville, Signalement, HistoriqueSignalement
 
 
 class RegionSerializer(serializers.ModelSerializer):
@@ -16,9 +16,30 @@ class VilleSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class HistoriqueSignalementSerializer(serializers.ModelSerializer):
+
+    agent_nom = serializers.SerializerMethodField()
+
+    class Meta:
+        model = HistoriqueSignalement
+        fields = [
+            "id",
+            "agent_nom",
+            "ancien_statut",
+            "nouveau_statut",
+            "date_action",
+        ]
+    def get_agent_nom(self, historique):
+
+        if historique.agent:
+            return historique.agent.username
+
+        return "Agent non identifié"    
+
 class SignalementSerializer(serializers.ModelSerializer):
     ville_nom = serializers.CharField(source="ville.nom", read_only=True)
 
+    historique = HistoriqueSignalementSerializer(many=True,read_only=True)
     class Meta:
         model = Signalement
         fields = "__all__"

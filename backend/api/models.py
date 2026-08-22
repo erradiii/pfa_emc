@@ -47,17 +47,99 @@ class Signalement(models.Model):
     class Genre(models.TextChoices):
         FEMME = "FEMME", "Femme"
         HOMME = "HOMME", "Homme"
-        AUTRE = "AUTRE", "Autre"
-        NON_PRECISE = "NON_PRECISE", "Non précisé"
+        
 
     class Statut(models.TextChoices):
         NOUVEAU = "NOUVEAU", "Nouveau"
-        EN_COURS = "EN_COURS", "En cours"
-        RESOLU = "RESOLU", "Résolu"
+
+        EN_ANALYSE = "EN_ANALYSE", "En analyse"
+
+        EN_APPROBATION = (
+        "EN_APPROBATION",
+        "En approbation",
+        )
+
+        APPROUVE = "APPROUVE", "Approuvé"
+
+        TRANSMIS_PARTENAIRE = (
+        "TRANSMIS_PARTENAIRE",
+        "Transmis au partenaire",
+        )
+
+        TRAITE = "TRAITE", "Traité"
+
+        REJETE = "REJETE", "Rejeté"
+
+        CLOTURE = "CLOTURE", "Clôturé"
 
     class TypeAccompagnement(models.TextChoices):
         JURIDIQUE = "JURIDIQUE", "Juridique"
         PSYCHIQUE = "PSYCHIQUE", "Psychique"
+
+    class Age(models.TextChoices):
+        AGE_5_12 = "5_12", "Âges de 5 à 12 ans"
+        AGE_13_17 = "13_17", "Âges de 13 à 17 ans"
+        AGE_18_25 = "18_25", "Âges de 18 à 25 ans"
+        PLUS_26 = "PLUS_26", "Plus de 26 ans"
+
+
+    class TypeCyberviolence(models.TextChoices):
+        PROPOS_HAINE = "PROPOS_HAINE", "Propos de haine"
+
+        PROPOS_RACISTE = (
+            "PROPOS_RACISTE_DISCRIMINATOIRE",
+            "Propos raciste ou discriminatoire",
+        )
+
+        DIFFAMATION = "DIFFAMATION", "Diffamation"
+
+        USURPATION_IDENTITE = (
+            "USURPATION_IDENTITE",
+            "Usurpation d'identité",
+        )
+
+        PHOTOS_INTIMES = (
+            "PHOTOS_INTIMES",
+            "Publication de photos intimes ou personnelles",
+        )
+
+        VIDEOS_INTIMES = (
+            "VIDEOS_INTIMES",
+            "Publication de vidéos intimes ou personnelles",
+        )
+
+        MENACE_PHOTOS_INTIMES = (
+            "MENACE_PHOTOS_INTIMES",
+            "Menace de publier des photos intimes ou personnelles",
+        )
+
+        MENACE_VIDEOS_INTIMES = (
+            "MENACE_VIDEOS_INTIMES",
+            "Menace de publier des vidéos intimes ou personnelles",
+        )
+
+        AUTRES = "AUTRES", "Autres"
+
+
+    class TypeContenu(models.TextChoices):
+        VIDEO = "VIDEO", "Vidéo"
+        IMAGE = "IMAGE", "Image"
+        COMMENTAIRE = "COMMENTAIRE", "Commentaire"
+        COMPTE = "COMPTE", "Compte"
+        AUTRES = "AUTRES", "Autres"
+
+
+    class Plateforme(models.TextChoices):
+        FACEBOOK = "FACEBOOK", "Facebook"
+        INSTAGRAM = "INSTAGRAM", "Instagram"
+        WHATSAPP = "WHATSAPP", "WhatsApp"
+        MESSENGER = "MESSENGER", "Messenger"
+        TIKTOK = "TIKTOK", "Tiktok"    
+
+    class Partenaire(models.TextChoices):
+        IBNIES = "IBNIES", "IBNIES"
+        ONDES = "ONDES", "ONDES"
+        ATECS = "ATECS", "ATECS"
 
     # Étape 1 du formulaire : Concerné
     emetteur = models.CharField(
@@ -73,36 +155,44 @@ class Signalement(models.Model):
         blank=True
     )
 
+
     age = models.CharField(
-        max_length=100,
+        max_length=20,
+        choices=Age.choices,
         null=True,
-        blank=True
+        blank=True,
     )
 
-    # Étape 2 du formulaire : Contenu
     cyberharcelement_type = models.CharField(
-        max_length=255,
-        verbose_name="Type de cyberviolence"
+        max_length=50,
+        choices=TypeCyberviolence.choices,
+        verbose_name="Type de cyberviolence",
     )
 
     type_contenu = models.CharField(
-        max_length=255,
-        verbose_name="Type de contenu"
+        max_length=30,
+        choices=TypeContenu.choices,
+        verbose_name="Type de contenu",
     )
 
     plateforme = models.CharField(
-        max_length=255
+        max_length=30,
+        choices=Plateforme.choices,
     )
+
+    # Étape 2 du formulaire : Contenu
+    
+
 
     url = models.TextField(
         verbose_name="Lien vers le contenu"
     )
 
-    capture_image_url = models.TextField(
-        null=True,
-        blank=True,
-        verbose_name="Capture image"
-    )
+    capture_image_url = models.ImageField(
+    upload_to="captures/",
+    null=True,
+    blank=True,
+)
 
     # Étape 3 du formulaire : Accompagnement
     accompagnement_demande = models.BooleanField(
@@ -172,6 +262,12 @@ class Signalement(models.Model):
         verbose_name="Date de modification"
     )
 
+    partenaire = models.CharField(
+        max_length=20,
+        choices=Partenaire.choices,
+        null=True,
+        blank=True,
+    )
     def clean(self):
         """
         Validation métier :
@@ -214,3 +310,34 @@ class Signalement(models.Model):
 
     def __str__(self):
         return f"Signalement #{self.id} - {self.statut}"
+
+
+class HistoriqueSignalement(models.Model):
+
+    signalement = models.ForeignKey(
+        Signalement,
+        on_delete=models.CASCADE,
+        related_name="historique"
+    )
+
+    agent = models.ForeignKey(
+        "auth.User",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True
+    )
+
+    ancien_statut = models.CharField(
+        max_length=30
+    )
+
+    nouveau_statut = models.CharField(
+        max_length=30
+    )
+
+    date_action = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    def __str__(self):
+        return f"Signalement #{self.signalement.id}"    

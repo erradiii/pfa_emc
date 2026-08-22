@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Region, Ville, Signalement
+from .models import Region, Ville, Signalement, HistoriqueSignalement
 
 
 @admin.register(Region)
@@ -82,6 +82,7 @@ class SignalementAdmin(admin.ModelAdmin):
         ("Suivi interne EMC", {
             "fields": (
                 "statut",
+                "partenaire",
                 "raison",
                 "langue",
             )
@@ -93,3 +94,15 @@ class SignalementAdmin(admin.ModelAdmin):
             )
         }),
     )
+
+
+@admin.register(HistoriqueSignalement)
+class HistoriqueSignalementAdmin(admin.ModelAdmin):
+
+    list_display = (
+        "signalement",
+        "agent",
+        "ancien_statut",
+        "nouveau_statut",
+        "date_action",
+    )    
