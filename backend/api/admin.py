@@ -25,12 +25,14 @@ class SignalementAdmin(admin.ModelAdmin):
         "plateforme",
         "accompagnement_demande",
         "type_accompagnement",
+        "partenaire",
         "statut",
         "created_at",
     )
 
     list_filter = (
         "statut",
+        "partenaire",
         "plateforme",
         "accompagnement_demande",
         "type_accompagnement",

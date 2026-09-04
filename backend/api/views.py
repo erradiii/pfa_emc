@@ -130,6 +130,15 @@ def statut_autorise(role, nouveau_statut):
     if role == "ADMIN_EMC":
         return True
 
+    if role == "AGENT_ANALYSE":
+        statuts_autorises = [
+            "NOUVEAU",
+            "EN_ANALYSE",
+            "EN_APPROBATION",
+        ]
+
+        return nouveau_statut in statuts_autorises
+
     if role == "AGENT_APPROBATION":
         statuts_autorises = [
             "NOUVEAU",
@@ -141,11 +150,14 @@ def statut_autorise(role, nouveau_statut):
 
         return nouveau_statut in statuts_autorises
 
-    if role == "AGENT_ANALYSE":
+    if role in [
+        "PARTENAIRE_IBNIES",
+        "PARTENAIRE_ONDES",
+        "PARTENAIRE_ATECS",
+    ]:
         statuts_autorises = [
-            "NOUVEAU",
-            "EN_ANALYSE",
-            "EN_APPROBATION",
+            "TRANSMIS_PARTENAIRE",
+            "TRAITE",
         ]
 
         return nouveau_statut in statuts_autorises

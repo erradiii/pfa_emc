@@ -269,29 +269,53 @@ class Signalement(models.Model):
         blank=True,
     )
     def clean(self):
-        """
-        Validation métier :
-        Si accompagnement demandé, alors les informations personnelles deviennent obligatoires.
-        Sinon, elles doivent rester vides.
-        """
+
+        informations_accompagnement = (
+            self.nom
+            or self.prenom
+            or self.telephone
+            or self.ville
+            or self.type_accompagnement
+        )
+
+        # Si l'utilisateur a rempli une information
+        # d'accompagnement, on coche automatiquement
+        # accompagnement_demande.
+        if informations_accompagnement:
+            self.accompagnement_demande = True
 
         if self.accompagnement_demande:
+
             erreurs = {}
 
             if not self.nom:
-                erreurs["nom"] = "Le nom est obligatoire si un accompagnement est demandé."
+                erreurs["nom"] = (
+                    "Le nom est obligatoire "
+                    "si un accompagnement est demandé."
+                )
 
             if not self.prenom:
-                erreurs["prenom"] = "Le prénom est obligatoire si un accompagnement est demandé."
+                erreurs["prenom"] = (
+                    "Le prénom est obligatoire "
+                    "si un accompagnement est demandé."
+                )
 
             if not self.telephone:
-                erreurs["telephone"] = "Le téléphone est obligatoire si un accompagnement est demandé."
+                erreurs["telephone"] = (
+                    "Le téléphone est obligatoire "
+                    "si un accompagnement est demandé."
+                )
 
             if not self.ville:
-                erreurs["ville"] = "La ville est obligatoire si un accompagnement est demandé."
+                erreurs["ville"] = (
+                    "La ville est obligatoire "
+                    "si un accompagnement est demandé."
+                )
 
             if not self.type_accompagnement:
-                erreurs["type_accompagnement"] = "Le type d'accompagnement est obligatoire."
+                erreurs["type_accompagnement"] = (
+                    "Le type d'accompagnement est obligatoire."
+                )
 
             if erreurs:
                 raise ValidationError(erreurs)

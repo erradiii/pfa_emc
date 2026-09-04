@@ -1,7 +1,7 @@
 # Environnement et Sécurité (TRÈS IMPORTANT)
 .env
-
 .env.*
+!.env.example
 *.pem
 
 # Python et Django
@@ -29,3 +29,4 @@ docker-compose.override.yml
 # Fichiers Système (Mac / Windows)
 .DS_Store
 Thumbs.db
+

@@ -8,7 +8,7 @@
    GOOGLE FONTS
    ========================= */
 
-@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 
 /* =========================
@@ -60,17 +60,18 @@ html {
 
 body {
   font-family:
+    "Inter",
     -apple-system,
     BlinkMacSystemFont,
     "Segoe UI",
     Roboto,
-    "Helvetica Neue",
     Arial,
     sans-serif;
 
-  background-color: var(--fond);
+  background-color: #f4f6f9;
   color: var(--texte);
-  line-height: 1.7;
+  line-height: 1.5;
+  font-size: 13px;
   overflow-x: hidden;
 }
 
@@ -80,7 +81,14 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: 'Cairo', sans-serif;
+  font-family:
+    "Inter",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  letter-spacing: -0.02em;
 }
 
 button,
@@ -152,7 +160,7 @@ img {
 }
 
 .institution-inner {
-  min-height: 100px;
+  min-height: 84px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -165,12 +173,12 @@ img {
 .brand {
   display: flex;
   align-items: center;
-  gap: 18px;
+  gap: 14px;
 }
 
 .brand-logo {
-  width: 62px;
-  height: 62px;
+  width: 56px;
+  height: 56px;
 
   display: flex;
   justify-content: center;
@@ -179,7 +187,7 @@ img {
   background-color: var(--bleu-fonce);
   color: white;
 
-  font-family: 'Cairo', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 18px;
   font-weight: bold;
 
@@ -188,7 +196,7 @@ img {
 
 .brand h1 {
   color: var(--bleu-fonce);
-  font-size: 25px;
+  font-size: 22px;
 }
 
 .brand p {
@@ -252,7 +260,7 @@ img {
 
   text-decoration: none;
 
-  font-family: 'Cairo', sans-serif;
+  font-family: "Inter", sans-serif;
 
   font-size: 14px;
   font-weight: 600;
@@ -302,7 +310,7 @@ button {
 
   color: white;
 
-  font-family: 'Cairo', sans-serif;
+  font-family: "Inter", sans-serif;
   font-weight: 600;
 
   cursor: pointer;
@@ -351,7 +359,7 @@ button:hover {
 
   color: #f0c650;
 
-  font-family: 'Cairo', sans-serif;
+  font-family: "Inter", sans-serif;
 
   font-size: 12px;
   font-weight: bold;
@@ -398,8 +406,8 @@ button:hover {
    ===================================================== */
 
 .page-content {
-  padding-top: 35px;
-  padding-bottom: 50px;
+  padding-top: 22px;
+  padding-bottom: 36px;
 }
 
 
@@ -408,11 +416,11 @@ button:hover {
    ===================================================== */
 
 .dashboard-section {
-  margin-bottom: 45px;
+  margin-bottom: 28px;
 }
 
 .section-header {
-  margin-bottom: 22px;
+  margin-bottom: 16px;
 }
 
 .section-header > span {
@@ -427,7 +435,7 @@ button:hover {
 .section-header h2 {
   color: var(--bleu-fonce);
 
-  font-size: 25px;
+  font-size: 22px;
 }
 
 .section-header p {
@@ -549,11 +557,9 @@ button:hover {
 
 .stats-grid {
   display: grid;
-
-  grid-template-columns:
-    repeat(2, minmax(0, 1fr));
-
-  gap: 22px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  align-items: stretch;
 }
 
 
@@ -561,39 +567,43 @@ button:hover {
 
 .stat-card {
   min-width: 0;
+  min-height: 260px;
 
-  padding: 24px;
+  padding: 18px 18px 14px;
 
   background-color: var(--blanc);
 
-  border: 1px solid var(--bordure);
+  border: 1px solid #e4e9ef;
+  border-top: 3px solid var(--bleu);
 
-  border-top: 4px solid var(--bleu);
+  border-radius: 10px;
 
-  border-radius: var(--border-radius);
-
-  box-shadow: var(--ombre);
+  box-shadow:
+    0 5px 18px rgba(44, 62, 80, 0.06);
 
   transition: var(--transition);
+
+  overflow: hidden;
 }
 
 .stat-card:hover {
-  transform: translateY(-3px);
+  transform: translateY(-2px);
 
   box-shadow:
-    0 10px 25px rgba(0, 0, 0, 0.09);
+    0 8px 22px rgba(44, 62, 80, 0.09);
 }
 
 
 /* Titre des cartes statistiques */
 
 .stat-card h3 {
-  margin: 0 0 20px;
+  margin: 0 0 8px;
 
   color: var(--bleu-fonce);
 
-  font-size: 18px;
+  font-size: 15px;
   font-weight: 600;
+  line-height: 1.3;
 }
 
 
@@ -604,39 +614,92 @@ button:hover {
 
   display: block;
 
-  width: 35px;
-  height: 3px;
+  width: 32px;
+  height: 2px;
 
-  margin-top: 8px;
+  margin-top: 9px;
 
   background-color: var(--bleu);
 }
 
 
-/* Grande statistique sur toute la largeur */
+/* Grande statistique */
 
 .stat-card-large {
-  grid-column: 1 / -1;
+  grid-column: span 2;
 }
 
 
 /* Recharts */
 
+.stat-card .recharts-responsive-container {
+  margin-top: 2px;
+}
+
 .stat-card .recharts-wrapper {
   margin: 0 auto;
 }
 
+.stat-card .recharts-surface {
+  overflow: visible;
+}
+
 .stat-card .recharts-legend-wrapper {
-  font-size: 12px;
+  font-family: "Inter", sans-serif;
+  font-size: 11px !important;
+  line-height: 1.3;
+}
+
+.stat-card .recharts-legend-item {
+  margin-right: 8px !important;
+}
+
+.stat-card .recharts-cartesian-axis-tick-value {
+  font-family: "Inter", sans-serif;
+  font-size: 11px;
+  fill: #667788;
+}
+
+.stat-card .recharts-text {
+  font-family: "Inter", sans-serif;
+  font-size: 11px;
+}
+
+.stat-card .recharts-pie-label-text {
+  font-size: 11px;
+  fill: #526170;
 }
 
 .stat-card .recharts-default-tooltip {
-  border-radius: 6px !important;
+  border-radius: 8px !important;
 
   border: 1px solid var(--bordure) !important;
 
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+
   box-shadow:
     0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+
+/* Ajustement spécifique de la page statistiques */
+
+#statistiques {
+  margin-bottom: 18px;
+}
+
+#statistiques .section-header {
+  margin-bottom: 14px;
+}
+
+#statistiques .section-header h2 {
+  font-size: 21px;
+}
+
+#statistiques .section-header p {
+  font-size: 13px;
+  line-height: 1.45;
 }
 
 
@@ -805,7 +868,7 @@ th {
 
   text-align: left;
 
-  font-family: 'Cairo', sans-serif;
+  font-family: "Inter", sans-serif;
 
   font-size: 11px;
 
@@ -1549,11 +1612,11 @@ tbody tr:hover {
   }
 
   .stats-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .stat-card-large {
-    grid-column: auto;
+    grid-column: span 2;
   }
 
   .login-content {
@@ -1650,5 +1713,24 @@ tbody tr:hover {
 
   .login-presentation {
     padding: 25px 0;
+  }
+}
+
+@media (max-width: 700px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stat-card-large {
+    grid-column: auto;
+  }
+
+  .stat-card {
+    min-height: 250px;
+    padding: 16px;
+  }
+
+  .stat-card h3 {
+    font-size: 14px;
   }
 }

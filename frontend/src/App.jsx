@@ -18,10 +18,19 @@ import {
   Pie,
   Cell,
   Legend,
+  CartesianGrid,
 } from "recharts";
 
 import "./App.css";
 
+const styleTexteAxe = {
+  fontSize: 12,
+  fill: "#64748b",
+};
+
+const styleLegende = {
+  fontSize: 12,
+};  
 
 function App() {
   const [connecte, setConnecte] = useState(
@@ -56,7 +65,7 @@ function App() {
     setAccompagnementSeulement,
   ] = useState(false);
 
-
+  const [pageActive, setPageActive] = useState("statistiques");
   // ==========================================
   // CHARGEMENT
   // ==========================================
@@ -614,15 +623,24 @@ function App() {
           "
         >
 
-          <a href="#dashboard">
+          <a
+            href="#dashboard"
+            onClick={() => setPageActive("dashboard")}
+          >
             Tableau de bord
           </a>
 
-          <a href="#statistiques">
+          <a
+            href="#statistiques"
+            onClick={() => setPageActive("statistiques")}
+          >
             Statistiques
           </a>
 
-          <a href="#signalements">
+          <a
+            href="#signalements"
+            onClick={() => setPageActive("signalements")}
+          >
             Signalements
           </a>
 
@@ -648,46 +666,48 @@ function App() {
 
         {/* HERO */}
 
-        <section className="dashboard-hero">
+        {pageActive === "dashboard" && (
+          <section className="dashboard-hero">
 
-          <div
-            className="
-              page-container
-              hero-content
-            "
-          >
+            <div
+              className="
+                page-container
+                hero-content
+              "
+            >
 
-            <div>
+              <div>
 
-              <span className="section-label">
-                ESPACE AGENTS
-              </span>
+                <span className="section-label">
+                  ESPACE AGENTS
+                </span>
 
-              <h2>
-                Tableau de bord EMC Helpline
-              </h2>
+                <h2>
+                  Tableau de bord EMC Helpline
+                </h2>
 
-              <p>
-                Consultez, analysez et suivez
-                les signalements reçus depuis
-                la plateforme publique.
-              </p>
+                <p>
+                  Consultez, analysez et suivez
+                  les signalements reçus depuis
+                  la plateforme publique.
+                </p>
+
+              </div>
+
+
+              <button
+                className="refresh-button"
+                onClick={
+                  chargerSignalements
+                }
+              >
+                Actualiser les données
+              </button>
 
             </div>
 
-
-            <button
-              className="refresh-button"
-              onClick={
-                chargerSignalements
-              }
-            >
-              Actualiser les données
-            </button>
-
-          </div>
-
-        </section>
+          </section>
+        )}
 
 
         <div
@@ -720,6 +740,7 @@ function App() {
               DASHBOARD
           ================================= */}
 
+          {pageActive === "dashboard" && (
           <section
             id="dashboard"
             className="dashboard-section"
@@ -795,12 +816,14 @@ function App() {
             </div>
 
           </section>
+          )}
 
 
           {/* =================================
               STATISTIQUES
           ================================= */}
 
+          {pageActive === "statistiques" && (
           <section
             id="statistiques"
             className="dashboard-section"
@@ -819,7 +842,13 @@ function App() {
             />
 
 
-            <div className="stats-grid">
+            <div
+              className="stats-grid"
+              style={{
+                gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
+                gap: "16px",
+              }}
+            >
 
 
               {/* =============================
@@ -833,46 +862,31 @@ function App() {
                 </h3>
 
 
-                <ResponsiveContainer
-                  width="100%"
-                  height={280}
-                >
-
-                  <PieChart>
-
+                <ResponsiveContainer width="100%" height={240}>
+                  <PieChart
+                    margin={{
+                      top: 10,
+                      right: 20,
+                      left: 20,
+                      bottom: 10,
+                    }}
+                  >
                     <Pie
                       data={donneesGenre}
-
                       dataKey="total"
-
                       nameKey="nom"
-
                       cx="50%"
-
                       cy="45%"
-
-                      outerRadius={85}
-
+                      outerRadius={72}
                       label
                     >
-
-                      <Cell
-                        fill="#d977aa"
-                      />
-
-                      <Cell
-                        fill="#2474a6"
-                      />
-
+                      <Cell fill="#d977aa" />
+                      <Cell fill="#2474a6" />
                     </Pie>
 
-
                     <Tooltip />
-
-                    <Legend />
-
+                    <Legend verticalAlign="bottom" height={30} />
                   </PieChart>
-
                 </ResponsiveContainer>
 
               </div>
@@ -889,16 +903,23 @@ function App() {
                 </h3>
 
 
-                <ResponsiveContainer width="100%" height={300}>
-                  <PieChart>
+                <ResponsiveContainer width="100%" height={240}>
+                  <PieChart
+                    margin={{
+                      top: 10,
+                      right: 20,
+                      left: 20,
+                      bottom: 10,
+                    }}
+                  >
                     <Pie
                       data={donneesAge}
                       dataKey="total"
                       nameKey="nom"
                       cx="50%"
-                      cy="50%"
-                      innerRadius={45}
-                      outerRadius={85}
+                      cy="45%"
+                      innerRadius={40}
+                      outerRadius={72}
                     >
                       {donneesAge.map((item, index) => (
                         <Cell
@@ -914,8 +935,7 @@ function App() {
                     </Pie>
 
                     <Tooltip />
-
-                    <Legend />
+                    <Legend verticalAlign="bottom" height={30} />
                   </PieChart>
                 </ResponsiveContainer>
 
@@ -933,48 +953,31 @@ function App() {
                 </h3>
 
 
-                <ResponsiveContainer
-                  width="100%"
-                  height={280}
-                >
-
-                  <PieChart>
-
+                <ResponsiveContainer width="100%" height={240}>
+                  <PieChart
+                    margin={{
+                      top: 10,
+                      right: 20,
+                      left: 20,
+                      bottom: 10,
+                    }}
+                  >
                     <Pie
-                      data={
-                        donneesAccompagnement
-                      }
-
+                      data={donneesAccompagnement}
                       dataKey="total"
-
                       nameKey="nom"
-
                       cx="50%"
-
                       cy="45%"
-
-                      innerRadius={45}
-
-                      outerRadius={85}
+                      innerRadius={40}
+                      outerRadius={72}
                     >
-
-                      <Cell
-                        fill="#0b5c9e"
-                      />
-
-                      <Cell
-                        fill="#d7a928"
-                      />
-
+                      <Cell fill="#0b5c9e" />
+                      <Cell fill="#d7a928" />
                     </Pie>
 
-
                     <Tooltip />
-
-                    <Legend />
-
+                    <Legend verticalAlign="bottom" height={30} />
                   </PieChart>
-
                 </ResponsiveContainer>
 
               </div>
@@ -991,43 +994,39 @@ function App() {
                 </h3>
 
 
-                <ResponsiveContainer
-                  width="100%"
-                  height={280}
-                >
-
+                <ResponsiveContainer width="100%" height={240}>
                   <BarChart
-                    data={
-                      donneesPlateformes
-                    }
+                    data={donneesPlateformes}
+                    margin={{
+                      top: 10,
+                      right: 10,
+                      left: 0,
+                      bottom: 10,
+                    }}
                   >
+                    <CartesianGrid
+                      strokeDasharray="3 3"
+                      vertical={false}
+                    />
 
                     <XAxis
                       dataKey="nom"
+                      tick={{ fontSize: 11 }}
                     />
 
                     <YAxis
                       allowDecimals={false}
+                      tick={{ fontSize: 11 }}
                     />
 
                     <Tooltip />
 
-
                     <Bar
                       dataKey="total"
-
                       fill="#0b5c9e"
-
-                      radius={[
-                        5,
-                        5,
-                        0,
-                        0,
-                      ]}
+                      radius={[6, 6, 0, 0]}
                     />
-
                   </BarChart>
-
                 </ResponsiveContainer>
 
               </div>
@@ -1042,6 +1041,9 @@ function App() {
                   stat-card
                   stat-card-large
                 "
+                style={{
+                  gridColumn: "span 2",
+                }}
               >
 
                 <h3>
@@ -1049,58 +1051,43 @@ function App() {
                 </h3>
 
 
-                <ResponsiveContainer
-                  width="100%"
-                  height={330}
-                >
-
+                <ResponsiveContainer width="100%" height={250}>
                   <BarChart
-                    data={
-                      donneesCyberviolence
-                    }
-
+                    data={donneesCyberviolence}
                     margin={{
                       top: 10,
-                      right: 20,
-                      left: 10,
-                      bottom: 80,
+                      right: 10,
+                      left: 0,
+                      bottom: 55,
                     }}
                   >
+                    <CartesianGrid
+                      strokeDasharray="3 3"
+                      vertical={false}
+                    />
 
                     <XAxis
                       dataKey="nom"
-
                       interval={0}
-
-                      angle={-25}
-
+                      angle={-18}
                       textAnchor="end"
-
-                      height={110}
+                      height={70}
+                      tick={{ fontSize: 10 }}
                     />
 
                     <YAxis
                       allowDecimals={false}
+                      tick={{ fontSize: 11 }}
                     />
 
                     <Tooltip />
 
-
                     <Bar
                       dataKey="total"
-
                       fill="#d7a928"
-
-                      radius={[
-                        5,
-                        5,
-                        0,
-                        0,
-                      ]}
+                      radius={[6, 6, 0, 0]}
                     />
-
                   </BarChart>
-
                 </ResponsiveContainer>
 
               </div>
@@ -1109,12 +1096,14 @@ function App() {
             </div>
 
           </section>
+          )}
 
 
           {/* =================================
               SIGNALEMENTS
           ================================= */}
 
+          {pageActive === "signalements" && (
           <section
             id="signalements"
             className="dashboard-section"
@@ -1490,6 +1479,7 @@ function App() {
             </div>
 
           </section>
+          )}
 
         </div>
 
@@ -1724,6 +1714,18 @@ function DetailSignalement({
 
   }
 
+  if (
+    role === "PARTENAIRE_IBNIES" ||
+    role === "PARTENAIRE_ONDES" ||
+    role === "PARTENAIRE_ATECS"
+  ) {
+
+    statutsAutorises = [
+      "TRANSMIS_PARTENAIRE",
+      "TRAITE",
+    ];
+
+  }
 
   return (
     <div className="detail-card">
