@@ -1,5 +1,9 @@
 name: EMC CI
 
+permissions:
+  contents: read
+  packages: write
+
 on:
   push:
     branches:
@@ -163,3 +167,50 @@ jobs:
             --build-arg VITE_API_URL=/api \
             -t emc-frontend-ci \
             ./frontend
+
+
+      # ==============================
+      # GitHub Container Registry
+      # ==============================
+
+      - name: Login to GitHub Container Registry
+        if: github.event_name == 'push'
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | \
+          docker login ghcr.io \
+          -u "${{ github.actor }}" \
+          --password-stdin
+
+
+      - name: Tag backend Docker image
+        if: github.event_name == 'push'
+        run: |
+          docker tag emc-backend-ci \
+            ghcr.io/erradiii/emc-backend:${{ github.sha }}
+
+          docker tag emc-backend-ci \
+            ghcr.io/erradiii/emc-backend:partn
+
+
+      - name: Tag frontend Docker image
+        if: github.event_name == 'push'
+        run: |
+          docker tag emc-frontend-ci \
+            ghcr.io/erradiii/emc-frontend:${{ github.sha }}
+
+          docker tag emc-frontend-ci \
+            ghcr.io/erradiii/emc-frontend:partn
+
+
+      - name: Push backend Docker image
+        if: github.event_name == 'push'
+        run: |
+          docker push ghcr.io/erradiii/emc-backend:${{ github.sha }}
+          docker push ghcr.io/erradiii/emc-backend:partn
+
+
+      - name: Push frontend Docker image
+        if: github.event_name == 'push'
+        run: |
+          docker push ghcr.io/erradiii/emc-frontend:${{ github.sha }}
+          docker push ghcr.io/erradiii/emc-frontend:partn
