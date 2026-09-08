@@ -189,7 +189,7 @@ jobs:
             ghcr.io/erradiii/emc-backend:${{ github.sha }}
 
           docker tag emc-backend-ci \
-            ghcr.io/erradiii/emc-backend:partn
+            ghcr.io/erradiii/emc-backend:${{ github.ref_name }}
 
 
       - name: Tag frontend Docker image
@@ -199,18 +199,18 @@ jobs:
             ghcr.io/erradiii/emc-frontend:${{ github.sha }}
 
           docker tag emc-frontend-ci \
-            ghcr.io/erradiii/emc-frontend:partn
+            ghcr.io/erradiii/emc-frontend:${{ github.ref_name }}
 
 
       - name: Push backend Docker image
         if: github.event_name == 'push'
         run: |
           docker push ghcr.io/erradiii/emc-backend:${{ github.sha }}
-          docker push ghcr.io/erradiii/emc-backend:partn
+          docker push ghcr.io/erradiii/emc-backend:${{ github.ref_name }}
 
 
       - name: Push frontend Docker image
         if: github.event_name == 'push'
         run: |
           docker push ghcr.io/erradiii/emc-frontend:${{ github.sha }}
-          docker push ghcr.io/erradiii/emc-frontend:partn
+          docker push ghcr.io/erradiii/emc-frontend:${{ github.ref_name }}
